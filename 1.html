@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.min.js"></script>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 1900px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        function getVirtulData(year) {
+            year = year || '2017';
+            console.log(year)
+            var date = +echarts.number.parseDate(year + '-01-01');
+            console.log(+echarts)
+            var end = +echarts.number.parseDate((+year + 3) + '-01-01');
+            var dayTime = 3600 * 24 * 1000;
+            var data = [];
+            for (var time = date; time < end; time += dayTime) {
+                data.push([
+                    echarts.format.formatTime('yyyy-MM-dd', time),
+                    Math.floor(Math.random() * 1000)
+                ]);
+            }
+            console.log(data)
+            return data;
+        }
+
+        option = {
+            title: {
+                top: 30,
+                left: 'center',
+                /*  text: '水质监测点历史报警趋势热力图' */
+            },
+            tooltip: {},
+            visualMap: {
+                splitNumber: 11,
+                type: 'piecewise',
+                pieces: [{
+                        gt: 3047,
+                        color: '#d50707',
+                        label: '大于3047'
+                    }, // (3047, Infinity]
+                    {
+                        gt: 966,
+                        lte: 3047,
+                        color: '#db14a5',
+                        label: '966-3047'
+                    }, // (966, 3047]
+                    {
+                        gt: 455,
+                        lte: 966,
+                        color: '#8d18d0',
+                        label: '455-966'
+                    }, // (455, 966]
+                    {
+                        gt: 200.5,
+                        lte: 455,
+                        color: '#4d19c2',
+                        label: '200.5-455'
+                    }, // (200.5, 455]
+                    {
+                        gt: 95.94,
+                        lte: 200.5,
+                        color: '#2a00ff',
+                        label: '95.94-200.5'
+                    }, // (95.94, 200.5]
+                    {
+                        gt: 63,
+                        lte: 95.94,
+                        color: '#1d0eb2',
+                        label: '63-95.94'
+                    }, // (63，95.94]
+                    {
+                        gt: 42.2,
+                        lte: 63,
+                        color: '#1e1169',
+                        label: '42.2-63'
+
+                    }, // (42.2，63]
+                    {
+                        gt: 26,
+                        lte: 42.2,
+                        color: '#8c9cbc',
+                        label: '26-42.2'
+                    }, // (26,42.2]
+                    {
+                        gt: 14,
+                        lte: 26,
+                        color: '#5f718e',
+                        label: '14-36'
+                    }, // (14，26]
+                    {
+                        gt: 0,
+                        lte: 14,
+                        color: '#293955',
+                        label: '0-14'
+                    }, // (0，14]
+                    {
+                        value: 0,
+                        label: '0',
+                        color: '#051837'
+                    }, // [0, 0]
+
+                ],
+                orient: 'horizontal',
+                left: 'center',
+                top: 65,
+                textStyle: {
+                    color: '#000'
+                },
+                itemStyle: {
+                    normal: {
+                        color: "green",
+                        backgroundColor: "green"
+                    }
+                },
+            },
+            calendar: {
+                top: 120,
+                left: 30,
+                right: 30,
+                cellSize: ['auto', 13],
+                range: ['2016', '2019'],
+                dayLabel: {
+                    show: true,
+                    /*   backgroundColor: "green" */
+                },
+
+                monthLabel: {
+                    position: "bottom"
+                }
+            },
+            series: {
+                type: 'heatmap',
+                coordinateSystem: 'calendar',
+                data: getVirtulData(2016),
+
+            }
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>
